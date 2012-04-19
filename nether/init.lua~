@@ -423,7 +423,7 @@ minetest.register_node("nether:nether_torch_bottom", {
 minetest.register_craftitem("nether:nether_pearl", {
 	description = "Nether Pearl",
 	wield_image = "nether_pearl.png",
-	wield_image = "nether_pearl.png",
+	inventory_image = "nether_pearl.png",
 	visual = "sprite",
 	physical = true,
 	textures = {"nether_pearl.png"},
@@ -803,10 +803,15 @@ minetest.register_abm({
 				local objpos = obj:getpos()
 				local objmeta = minetest.env:get_meta(objpos)
 				if objpos.y>pos.y-1 and objpos.y<pos.y and obj:get_player_name() ~= nil and obj:get_player_name() ~= "" then
-					if objmeta:get_string("teleporting") == "" or objmeta:get_string("teleporting") == nil then
-						objmeta:set_string("teleporting", "true")
-						nether:teleport_player(nether:inside_nether(obj:getpos()), obj)
-						objmeta:set_string("teleporting", "")
+					local innether = nether:inside_nether(obj:getpos())
+					if innether == true and (objmeta:get_string("teleportingfromnether") == "" or objmeta:get_string("teleportingfromnether") == nil) then
+						objmeta:set_string("teleportingfromnether", "true")
+						objmeta:set_string("teleportingtonether", "")
+						nether:teleport_player(innether, obj)
+					elseif innether == false and (objmeta:get_string("teleportingfromnether") == "" or objmeta:get_string("teleportingfromnether") == nil) then
+						objmeta:set_string("teleportingtonether", "true")
+						objmeta:set_string("teleportingfromnether", "")
+						nether:teleport_player(innether, obj)
 					end
 				end
 			end
