@@ -850,13 +850,8 @@ nether:read_portals_from_nether()
 -- Teleport the player
 function nether:teleport_player(from_nether, player)
 	local randomportal = 1
-	local coin = math.floor(math.random(0, 1))
-	if coin == 0 then
-		coin = -1
-	else
-		coin = 1
-	end
-	local coin2 = math.floor(math.random(1, 2))
+	local coin = math.random(0, 1) * 2 - 1 -- result will be -1 or 1
+	local coin2 = math.random(1, 2) -- result will be 1 or 2
 	local num = 1
 	local forgetit = false
 	if from_nether == true then
